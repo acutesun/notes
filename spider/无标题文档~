@@ -1,0 +1,4 @@
+1. 创建crawl模板spider
+    scrapy generator -t crawl lagou www.lagou.com
+2. 主要LinkExtractor参数讲解
+

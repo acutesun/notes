@@ -1,0 +1,68 @@
+1, 从豆瓣源下载scrapy
+     pip3 install -i https://pypi.douban.com/simple/ scrapy
+2, 在虚拟环境中创建scrapy项目
+    cd /python/
+    workon article_spider
+    scrapy startproject AticleSpider
+3, 创建模板
+    cd ArticleSpider
+    scrapy genspider jobboles bolg.jobbole.com
+
+4, 调试程序
+   1,终端调试需要进入该project目录下
+   先进入虚拟环境
+        workon article_spider
+        cd /python/article_spider/ArticleSpider
+   执行命令 scrapy crawl jobboles
+        (article_spider) sun@sun:/python/ArticleSpider$ scrapy crawl jobboles
+
+   2,在pythcarm的/python/ArticleSpider目录下创建main.py
+   sys.path.append(os.path.dirname(os.path.abspath(__file__)))  # 把文件路径添加
+   execute(['scrapy', 'crawl', 'jobboles'])  # 执行命令同终端一样
+   3,在terminal对某个url做调试
+        scrapy shell 'http://blog.jobbole.com/110287/'
+   
+5, xpath知识点
+    如果XPath的开头是一个斜线（/）代表这是绝对路径。如果开头是两个斜线（//）表示文件中所有符合模式的元素都会被选出来，即使是处于树中不同的层级也会被选出来
+    
+    article                选取所有article元素的所有子节点
+    /article               选取根元素article
+    article/a              选取所有属于article的子元素a
+    //div                  选取div元素(无论出现在文档任何位置)
+    article//div           选取article元素的所有后代元素div.
+    //@class               选取所有名为class的属性
+    /article/div[1]        选取article元素的第一个div子元素
+    /article/div[last()]   选取article元素的最后一个div子元素
+    //div[@lang]           选取所有拥有lang属性的div元素
+    //div[@lang="eng"]     选取所有lang属性值为eng的div元素
+    /div/*                 选取div的所有子元素
+    //*                    选取所有元素
+    //div[@*]              选取所有带属性的div元素
+    /div/a|//div/p         选取所有div元素的a,p元素
+    //span|//rl            选取所有的span和ul元素
+    article/div/p|//span    选取所有属于articleyuans的div元素的p元素和span元素
+   
+   
+   扩展: scrapy-djangoitem scrapy的插件, 处理scrapy的item
+   
+6. css选择器
+    *                           选择所有的节点
+    #container                  选择id为container的节点
+    .container                  选择所有class包含container的节点
+    li a                        选择所有li下的所有a节点
+    ul + p                      选择ul后面的第一个p元素
+    div#container > ul          选择id为container的div的第一个ul子节点
+    ul ~ p                      选择ul相邻的所有p元素
+    a[title]                    选择所有有title属性的a元素
+    a[href='http://job.com'     选择所有href属性值'为'job.com的a元素
+    a[href*='job']              选择所有href属性值'包含'job的a元素
+    a[href^='http']             选择所有href属性值以http开头的a元素
+    a[href$='.jpg']             选择所有href
+    input[type=radio]:checked   选择选中的radio元素
+   
+   
+   
+    
+    
+    
+   

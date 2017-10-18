@@ -1,0 +1,17 @@
+1.配置随机user-agent(fake_useragent)
+    fake_useragent github开源 (完成)
+2.使用ip代理(西刺代理, scrapy-crawlera, Tor)
+    未完成
+3.云打码平台, 人工打码平台
+    具体参考打码平台
+    未完成
+4. 配置setting文件
+    观看配置AutoThrottle extension
+    DOWNLOAD_DELAY=3
+    AUTOTHROTTLE_ENABLED=True
+    # The initial download delay
+    AUTOTHROTTLE_START_DELAY=1
+    不同spider设置不同settings
+    custom_settings={
+    COOKIES_ENABLED=True,
+    }

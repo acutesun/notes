@@ -1,0 +1,36 @@
+
+class Base(object):
+    def __init__(self):
+        print 'base create'
+
+
+class childA(Base):
+    def __init__(self):
+        print 'create A',
+        # Base.__init__(self)
+        super(childA, self).__init__()
+        print 'leave A'
+
+
+class childB(Base):
+    def __init__(self):
+        print 'create B',
+        super(childB, self).__init__()
+        print 'leave B'
+
+    def getB(self):
+        print self
+
+
+class C(childA, childB):
+    pass
+
+# base = Base()
+# a = childA()
+# b = childB()
+#  执行过程 先调用A的构造方法中的super(childA, self).__init__(), 该方法返回当前类继承顺序中childA后的childB
+#  然后再执行super(childB, self).__init__(), 这样顺序执行下去
+#  supder和父类没有关联，因此执行顺序是A —> B—>—>Base
+c = C()  # create A create B base create leave B leave A
+print c.__class__.__mro__   
+# (<class '__main__.C'>, <class '__main__.childA'>, <class '__main__.childB'>, <class '__main__.Base'>, <type 'object'>)

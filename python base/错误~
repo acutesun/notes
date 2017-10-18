@@ -1,0 +1,50 @@
+一，错误
+    捕获错误
+    try:
+         pass
+    except ValueError as e:
+         print('ValueError:', e)
+    except ZeroDivisionError as e:
+         print('ZeroDivisionError:', e)
+    else:
+        print('no error!')#没有错误时会执行这个语句
+    finally:
+        pass
+   抛出错误
+    class FooError(ValueError):
+        pass
+    def foo(s):
+        n = int(s)
+        if n == 0:
+            raise FooError('invalid value:%s' % s)
+        return 10/n
+        
+二，调式
+    1,断言 assert ,启动python解释器时可以用-0来关闭assert
+    def foo(s):
+        n = int(s)
+        assert n != 0,'n is zero' # n = 0时抛出AssertionError
+        return 10 / n
+    def main():
+        foo('0')
+    
+    2，logging   有四个级别debug，info，warning，error
+    logging通过简单的配置，一条语句可以同时输出到不同的地方，比如console和文件
+    import logging
+    logging.basicConfig(level=logging.INFO)
+    s = '0'
+    n = int(s)
+    logging.info('n = %d' % n)
+    print(10/n)
+    
+    3,pdb
+    $ python3 -m pdb err.py
+    以参数-m pdb启动后，pdb定位到下一步要执行的代码
+    输入命令l来查看代码：
+    输入命令n可以单步执行代码：
+    任何时候都可以输入命令p 变量名来查看变量：
+    p n
+    p s
+    输入命令q结束调试，退出程序
+    
+    

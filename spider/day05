@@ -1,0 +1,2 @@
+1. 在scrapy shell中配置user-agent
+    scrapy shell -s USER_AGENT='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit' https://www.zhihu.com/     question/59141807

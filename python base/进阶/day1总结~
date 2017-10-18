@@ -1,0 +1,5 @@
+1,统计序列中元素出现的次数(Counter)或者转换成字典再使用heapq.nlargest()
+2,正向迭代，反向迭代。类里面实现方法__iter__,__reversed__
+3,给元组命名nametuple
+4,并行迭代zip合并成元组，chain串行迭代
+5,列表，字典，集合

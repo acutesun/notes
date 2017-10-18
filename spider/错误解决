@@ -1,0 +1,4 @@
+1. 在使用MysqlTwistedPipeline异步插入数据时出现 (1366, "Incorrect string value: '\\xE9\\x87\\x8D\\xE5\\xBA\\x86...' for column 'content' at row 1")
+    该错误是编码格式问题. 我遇到的是mysql的表的格式为latin1_swedish_ci（show full columns from zhihu_question;）
+    使用命令将表编码格式设置为utf-8： ALTER TABLE `zhihu_answer` DEFAULT CHARACTER SET utf8;
+    将字段编码格式设置utf8：ALTER TABLE `zhihu_answer` CHANGE `content` `content` longtext CHARACTER SET utf8 NOT NULL; 

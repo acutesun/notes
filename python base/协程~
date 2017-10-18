@@ -1,0 +1,39 @@
+协程
+    协程有极高的效率，因为协程是程序自身控制，没有线程切换开销
+    不需要线程的锁机制，因为是一个线程。不存在写变量冲突。
+
+def consumer():
+    r = ''
+    while True:
+        n = yield r   # 接收数据并赋值给N，生成数据返回r
+        if not n:
+            return
+        print('[CONSUMER] Consuming %...' % n)
+        r = '200 OK'
+def produce(c):
+    c.send(None)
+    n = 0
+    while n < 5:
+        n = n+1
+        print('[PRODUCE] Producing %s....' % n)
+        r = c.send(n)
+        print('PRODUCE' Consumer return:%s' % r)
+    c.close()
+
+
+# 写法一
+c = consumer()
+produce(c)
+
+
+#  写法二
+
+def produce2(c):
+    print('ready')
+    yield from c
+c = consumer()   # 消费者生成器
+p = produce2(c)   # 生产者生成器
+p.send(None)     # 通知生产者准备接收数据
+for i in range(5, 0, -1):
+    print(p.send(i))  # 发送数据,并打印消费者返回的数据
+    

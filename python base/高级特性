@@ -1,0 +1,53 @@
+一，切片
+    可以对list，tuple，str进行选取其中的一部分元素
+    >>> 'ABCDEFG'[:3]
+    'ABC'
+    >>> 'ABCDEFG'[::2]
+    'ACEG'
+二，迭代(Iterable)
+    对一个可迭代的对象进行操作
+    如何判断是否为一个可迭代的对象呢？
+        from collections import Iterable
+    >>> isinstance('abc', Iterable) # str是否可迭代
+        True
+    >>> isinstance([1,2,3], Iterable) # list是否可迭代
+        True
+    >>> isinstance(123, Iterable) # 整数是否可迭代
+        False
+    实现下标循环
+    for i, value in enumerate(['A', 'B', 'C']):
+        print(i, value)
+        
+三，列表生成式[]
+    >>> [x * x for x in range(1, 11) if x % 2 == 0]
+        [4, 16, 36, 64, 100]
+        
+    L1 = ['Hello', 'World', 18, 'Apple', None]
+    L2 = [s.lower() for s in L1 if isinstance(s,str)]
+    
+四，生成器 generator
+    创建方法
+    1,第一种方法很简单，只要把一个列表生成式的[]改成()，就创建了一个generator
+    g = (x * x for x in range(10))
+    next(g)
+    2,如果一个 函数包含了generator，那么就是一个生成器
+    def odd():
+        print('step 1')
+        yield 1
+        print('step 2')
+        yield(3)
+        print('step 3')
+    yield(5)
+五，迭代器
+    >>> isinstance(iter([]), Iterator)
+True
+    可迭代：
+    >>> from collections import Iterable
+    >>> isinstance([], Iterable)
+    True
+    >>> isinstance({}, Iterable)
+    True
+    
+    凡是可作用于for循环的对象都是Iterable类型；
+    凡是可作用于next()函数的对象都是Iterator类型，它们表示一个惰性计算的序列；
+    集合数据类型如list、dict、str等是Iterable但不是Iterator，不过可以通过iter()函数获得一个Iterator对象。

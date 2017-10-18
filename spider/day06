@@ -1,0 +1,8 @@
+1. 创建crawl模板spider
+    scrapy generator -t crawl lagou www.lagou.com
+2. 主要LinkExtractor参数讲解
+
+3. sys.path
+['', '/usr/lib/python35.zip', '/usr/lib/python3.5', '/usr/lib/python3.5/plat-x86_64-linux-gnu', '/usr/lib/python3.5/lib-dynload', '/home/sun/.local/lib/python3.5/site-packages', '/usr/local/lib/python3.5/dist-packages', '/usr/lib/python3/dist-packages']
+    默然情况下python导入文件或者模块的话，他会先在sys.path里找模块的路径。如果没有的话，
+程序就会报错。所以我们一般自己写程序的话。最好把自己的模块路径给加到当前模块扫描的路径里,eg: sys.path.append('你的模块的名称'),这样程序就不会因为找不到模块而报错。。

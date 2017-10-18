@@ -1,0 +1,167 @@
+一，类：类是抽象的模板，是一些具有相同特征的抽象概括，比如动物就是一个类，动物有很多特性，比如进食，繁衍等等很多相似的行为。把这些具有相同特性的生物抽象聚集起来就成了动物这个类。
+    在创建实例时，可以使用__init__(self,*args)方法将参数强行绑定。init方法会在创建实例的时候调用。
+    
+二，封装
+    通过get和set方法将数据封装起来，外部无法访问，这样的做的好处就是保证数据的安全，而外部调用的人也无需知道内部细节。
+    在python中，私有变量一般使用__开头，外部无法访问（其实这种私有变量的原理是python把'__属性名' 改变成了 '_类名__属性名'）
+    
+三，继承
+    继承的好处是获取类父类的全部方法
+    
+四，多态
+    子类可以调用父类的方法，也可以自己实现父类同名的方法。从而调用自己的方法
+    
+五，获取一个对象的信息
+    1,type()函数
+        type(abs),type(123) == int 
+        
+    2,isinstance()
+        isinstance(s,Student)
+     
+    3,dir()
+        dir('ABC')
+     
+    4,getattr()、setattr()以及hasattr()
+        getattr(obj,''x) #有x属性吗？
+        getattr(obj,'z',404) # 设置默认值，属性不存在，则会返回该值
+        setattr(obj,'y',12) #  设置属性值
+        getattr(obj,'power') #获取方法
+        hasattr(obj,'power') #有该方法吗
+        
+六，类属性
+    class Student(object):
+        name = 'SSSS' #实例属性通过self绑定
+    当实例属性和类属性的名字相同时，实例属性会覆盖掉类属性。两者最好不要同名
+七，__slots__
+    限制实例的属性，但是不能限制类属性方法
+    from types import MethodType
+    def set_city(self,city):
+        self.city = city
+    
+    def set_country(self,country):
+        self.country = country    
+
+    class Student(object):
+        __slots__ = ('name','age','set_city') #限制student实例能添加的属性
+        pass # 这里是可以取消的，因为里面已经有内容了
+
+    Student.set_city = MethodType(set_city,Student) #将方法绑定在类上，不是绑定在实例上
+
+
+    a = Student()
+    b = Student()
+    a.set_city('Beijing') #通过这种方法创建的属性是类属性,因为set_city是绑定在类上的。是类方法。
+    a.city
+    b.city    
+ #两者输出的结果都是Beijing的，所以通过set_city方法创建的属性是类属性，而__slots__限制的是实例添加的属性。
+ 
+八，@property 
+        把方法变成属性调用。
+    
+    class Screen(object):
+    @property
+    def width(self):
+        return self.width
+    @width.setter
+    def width(self,value):
+        self._width = value
+    @property
+    def height(self):
+        return self.height
+    @height.setter
+    def height(self,value):
+        self._height = value
+    @property
+    def resolution(self):
+        return self._width*self._height
+    s = Screen()
+    s.width = 1024
+    s.height = 768
+    print(s.resolution)
+    assert s.resolution == 786432, '1024 * 768 = %d ?' % s.resolution
+
+九，多继承
+    一个子类可以继承多个父类，使用MixIn设计来扩展类的功能
+    class MyTCPServer(TCPServer,ThreadingMixIn):
+        pass
+十，定制类
+    1,__str__(__repr__),str通常给用户看，repr通常用于调试
+    class Student(object):
+        def __init__(self,name):
+            self.name = name
+        def __str__(self):
+            return 'Student object:%s' % self.name
+        __repr__ = __str__
+        
+    2,__iter__ 通过这个方法返回一个迭代对象，并实现__next__方法获取下一个值，直到Stopiteration异常
+        class Fib(object):
+             def __init__(self):
+                 self.a, self.b = 0, 1 # 初始化两个计数器a，b
+
+             def __iter__(self):
+                 return self # 实例本身就是迭代对象，故返回自己
+
+             def __next__(self):
+                 self.a, self.b = self.b, self.a + self.b # 计算下一个值
+                 if self.a > 100000: # 退出循环的条件
+                      raise StopIteration();
+                  return self.a # 返回下一个值
+                  
+    3,__getitem__ 实现list一样的下标取元素，切片等功能。
+                  
+    4,__call__ 实现这个方法的的实例可以被调用,callable(Student()) 通过这个函数判断这个对象是否可以被调用。
+    
+     class Student(object):
+        def __init__(self,name):
+            self.name = name
+        def __call__(self):
+            print('my name is %s' % self.name)
+     s = Student('Michael')
+     s()
+     
+    5,__getattr__ 实现该方法动态返回属性或者方法。
+    class Student(object):
+        def __init__(self,name):
+            self.name = name
+         
+        def __getattr__(self,attr):
+            if attr == 'score':
+                return 99
+            elif attr == 'age': #返回方法
+                return lambda:25
+            else:
+                raise AttributeError('\'Student\'has no attribute \'%s\'' % attr)
+        >>> s = Student('micke')
+        >>> s.name
+        'micke'
+        >>> s.score
+        99
+        >>> s.age()
+        25
+        >>> s.hh
+        
+十一，枚举
+    Animal = Enum('Animal', 'ANT BEE CAT DOG')
+    Animal.ANT
+    
+    from enum import Enum, unique
+
+    @unique
+    class Weekday(Enum):
+    Sun = 0 # Sun的value被设定为0
+    Mon = 1
+    Tue = 2
+    Wed = 3
+    Thu = 4
+    Fri = 5
+    Sat = 6
+
+
+
+    
+        
+    
+        
+        
+        
+        

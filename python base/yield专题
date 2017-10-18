@@ -1,0 +1,125 @@
+class Fab:
+    def __init__(self,max):
+        self.max = max
+        self.a, self.b, self.n = 0, 1, 0
+    def __iter__(self):
+        return self
+    def __next__(self):
+        if self.n < self.max:
+            r = self.b
+            self.a, self.b = self.b, self.a + self.b
+            self.n = self.n + 1
+            return r
+        raise StopIteration()
+def fab(max): 
+    n, a, b = 0, 0, 1 
+    while n < max: 
+        yield b 
+        # print b 
+        a, b = b, a + b 
+        n = n + 1 
+两者的效果一致，但是使用yeild函数的代码更加简洁,更加清晰
+
+1,判断一个函数是否为特殊的generator函数,可以使用isgeneratorfunction判断
+    from inspect import isgeneratorfunction
+    isgenertorfunction(fab)
+    要注意fab和fab(5)的区别, fab是一个generator function, 而fab(5)是一个generator, 好比类和类的实例
+
+2,在一个generator中，如果没有return，则默认执行到函数完毕，如果在执行过程中return，那么抛出Stopiteration终止迭代
+
+yield from
+
+
+Python3.3版本的PEP 380中添加了yield from语法，允许一个generator生成器将其部分操作委派给另一个生成器。其产生的主要动力在于使生成器能够很容易分为多个拥有send和throw方法的子生成器，像一个大函数可以分为多个子函数一样简单。Python的生成器是协程coroutine的一种形式，但它的局限性在于只能向它的直接调用者yield值。这意味着那些包含yield的代码不能想其他代码那样被分离出来放到一个单独的函数中。这也正是yield from要解决的。
+虽然yield from主要设计用来向子生成器委派操作任务，但yield from可以向任意的迭代器委派操作；
+
+对于简单的迭代器，yield from iterable本质上等于for item in iterable: yield item的缩写版
+
+
+##  1. 利用yield from从生成器读取数据
+
+def reader():
+    # 模拟从文件读取数据的生成器
+    for i in range(4):
+        yield '<< %s' % i
+
+
+def reader_wrapper(g):
+    # 循环迭代从reader产生的数据
+    for v in g:
+        print('in reader_wrapper:', v)
+        yield v
+
+
+def reader_wrap(g):
+    yield from g    # 用yield from语句替代reader_wrapper(g)函数中的循环
+
+wrap = reader_wrapper(reader())
+for i in wrap:
+    print(i)
+
+##  2.利用yield from语句向生成器（协程）传送数据
+
+
+def writer():
+    # 读取send传入的数据, 并模拟写进文件
+    while True:
+        w = yield    # w 接收send传入的数据
+        print('>> ', w)
+
+
+def writer_wrapper(coro1):
+    coro1.send(None)   # 通知writer生成器接收数据
+    while True:
+        try:
+            x = yield 5  # x接收send传入的数据
+            coro1.send(x)  # 将x再发送给writer子生成器
+        except StopIteration:  # 处理子生成器返回异常
+            pass
+
+
+def writer_wrap(coro2):
+    yield from coro2  # 实现的功能同writer_wrapper一致,代码更加简洁
+
+w = writer()
+wwrap = writer_wrapper(w)
+print(w, wwrap)  # 两个都是生成器
+wwrap.send(None)  # 通知writer_wrapper生成器准备接收数据
+for i in range(5, 0, -1):
+    print(wwrap.send(i))   # writer_wrapper生成器将数据发送子生成器，并打印子生成器生成的数据
+
+##   3.利用yield from向生成器传送数据--处理异常 更进一步，如果我们的子生成器即writer需要处理异常该怎么办？
+##   假设writer需要处理SpamException异常，遇到这个异常打印***，代码如下：
+
+
+class SpamException(Exception):
+    pass
+
+
+def writer_spam():
+    while True:
+        try:
+            w = (yield)
+        except SpamException:
+            print('***')
+        else:
+            print('>> ', w)
+
+
+def wrapper_spam(w):
+    print('ready accept data')
+    yield from w
+
+ws = writer_spam()
+
+wspam = wrapper_spam(ws)
+wspam.send(None)  # 通知wrapper_spam接收数据
+
+for i in [1, 2, 5, 'spam', 8]:
+    if i == 'spam':
+        wspam.throw(SpamException)  # 抛出的异常会被子生成器接收并处理
+    else:
+        wspam.send(i)
+
+
+## yield from 语句不仅可以处理上述的例子,还可以用于外部生成器关闭，子生成器也会关闭；子生成器返回一个值得情况

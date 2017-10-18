@@ -1,0 +1,39 @@
+正则表达式
+
+深度优先算法
+
+def depth_first(root):
+    if root is None:
+        print(root._data)
+        if root.left_node is not None:
+            return root.depth_first(root.left_node)
+        elif root.right_node is not None:
+            return  root.depth_first(root.right_node)
+            
+            
+广度优先算法
+def width_first(root):
+    if root is None:
+        return
+    my_que = []
+    node = root
+    my_que.append(node)
+    while my_que:
+        node = my_que.pop(0)
+        print(node.elem)
+        if node.lchild is not None:
+            my_que.append(node.lchild)
+        if node.rchild is not None:
+            my_que.append(node.rchild)
+            
+编码解码
+    python在内存中统一使用unicode,网络传输或者本地存储转换为utf-8
+
+爬虫去重策略
+    1,将访问过得url保存到数据库中(速度慢)
+    2,将访问过得url保存到set中, 只需要o(1)代价就可以查询url
+        100000000(1亿url)*2byte*50个字符/1024/1024/1024=9G(内存占用太大)
+    3,url经过md5等哈希方法后保存到set中(scrapy使用)
+    4,用bitmap方法，将访问过得url通过hash函数映射到某一位（冲突高）
+    5,bloomfilter方法对bitmap进行改进，多重hash函数降低冲突
+    

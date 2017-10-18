@@ -1,0 +1,91 @@
+一，文件读写   使用open函数返回一个 file-like-Object
+    f = open('/python/test.txt','r')
+    f.read () #一次性全部读完
+    f.close()
+    一句话写法
+        with open('/python/test.txt','r') as f:
+            f.read()
+    用with打开文件不需要调用close()方法
+    read(size) 每次最多读取size个字节内容
+    readline()可以每次读取一行内容
+    调用readlines()一次读取所有内容并按行返回list
+    
+    #以二进制打开，编码gbk，遇编码错误直接忽略
+     f = open('/Users/michael/gbk.txt', 'rb', encoding='gbk', errors='ignore')
+    
+    写文件
+        with open('/Users/michael/test.txt', 'w') as f:
+            f.write('Hello, world!')
+            
+     
+
+r 以只读方式打开文件。文件的指针将会放在文件的开头。这是默认模式。
+
+rb 以二进制格式打开一个文件用于只读。文件指针将会放在文件的开头。这是默认模式。
+
+r+ 打开一个文件用于读写。文件指针将会放在文件的开头。
+
+rb+ 以二进制格式打开一个文件用于读写。文件指针将会放在文件的开头。
+
+w 打开一个文件只用于写入。如果该文件已存在则将其覆盖。如果该文件不存在，创建新文件。
+
+wb 以二进制格式打开一个文件只用于写入。如果该文件已存在则将其覆盖。如果该文件不存在，创建新文件。
+
+w+ 打开一个文件用于读写。如果该文件已存在则将其覆盖。如果该文件不存在，创建新文件。
+
+wb+ 以二进制格式打开一个文件用于读写。如果该文件已存在则将其覆盖。如果该文件不存在，创建新文件。
+
+a 打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。也就是说，新的内容将会被写入到已有内容之后。如果该文件不存在，创建新文件进行写入。
+
+ab 以二进制格式打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。也就是说，新的内容将会被写入到已有内容之后。如果该文件不存在，创建新文件进行写入。
+
+a+ 打开一个文件用于读写。如果该文件已存在，文件指针将会放在文件的结尾。文件打开时会是追加模式。如果该文件不存在，创建新文件用于读写。
+
+ab+ 以二进制格式打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。如果该文件不存在，创建新文件用于读写。
+
+二，StringIO(内存中读写str),BytesIO
+    #把str写入StringIO
+    f = StringIO()
+    f.write('Hello')
+    f.getvalue()
+    #从StringIO读取str
+    f = StringIO('nihao')
+    f.read()
+    
+    BytesIO同上
+    
+三，操作文件和目录os,shutil(对os的补充)
+    os.name #操作系统类型
+    os.uname() #操作系统详细
+    os.environ #环境变量
+    os.environ.get('PATH')
+
+os模块,os.path模块
+    #查看当前目录的绝对路径
+    os.path.abspath('.')
+
+    #合并拆分路径的函数不要求目录文件真实存在
+    #合并路径
+    os.path.join('/home/sun','testdir')
+    #拆分路径
+    os.path.split('home/sun/file.txt')
+    # 得到扩展名
+    os.path.splitext('/path/to/flie.txt')
+
+
+    #创建目录
+    os.mkdir('/home/sun/testdir')
+    #删掉目录
+    os.rmdir('/home/sun/testdir')
+
+    #列出当前所有目录
+    [x for x in os.listdir('.') if os.path.isdir(x)
+
+
+
+
+
+    
+    
+
+

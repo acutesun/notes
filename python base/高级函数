@@ -1,0 +1,32 @@
+一，高阶函数
+    首先函数名也是一个变量，变量可以指向函数。函数的参数可以接收变量，函数也可以接收另外一个函数作为参数，这样的函数称高阶函数。
+    
+二，map：map函数接收两个参数，一个是函数，一个是Iterable。map将传入的函数作用到序列的每个元素，然后返回一个新的Iterable
+
+三，reduce: reduce接收两个参数，一个函数，一个Iterable。reduce把函数结果继续和序列的下一个元素做累积计算，然后得出结果
+
+四：filter：函数接收两个参数，一个是函数，一个序列，filter把传入的函数作用到序列的每个元素，然后根据返回的结果是True(False)来决定保留(丢弃)元素
+
+五，sorted: sorted(list,key函数，reverse=True)，key函数作用到序列的每个元素,并将key函数返回的结果进行排序操作。
+
+六，返回函数： 返回一个函数时，牢记该函数并未执行，返回函数中不要引用任何可能会变化的变量。
+    def lazy_sum(*args):
+    def sum():
+        ax = 0
+        for n in args:
+            ax = ax + n
+        return ax
+    return sum
+    f = lazy_sum(1, 3, 5, 7, 9)
+    f()
+七，匿名函数：关键字 lambda
+    lambda x: x * x
+    
+八，装饰器
+    decorator就是一个返回函数的高阶函数，在不改变原函数的情况下动态的改变函数的功能。
+    
+九，偏函数
+        偏函数的作用就是把某一个或者多个参数固定，简化调用难度。
+        int2 = functools.partial(int,base=2) 
+        这里固定了函数的关键字参数base，这里的base是一个关键字参数。
+    

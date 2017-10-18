@@ -1,0 +1,53 @@
+创建基于python2.7的虚拟环境
+由于ubuntu安装了两个python版本。默认使用的是pip3，基于python3.5的。所以先安装pip。
+执行sudo apt install python-pip命令，等待安装完成。
+第一步，安装virtualenv
+    pip install virtualenv
+第二步，创建目录
+    mkdir myproject
+    cd myproject/
+第三步，创建一个独立的python运行环境，命名testdir
+    ～/python/myproject$ python -m virtualenv testdir
+New python executable in /python/myproject/testdir/bin/python
+Installing setuptools, pip, wheel...done.
+
+第四步，进入该环境
+/python/myproject$ source testdir/bin/activate
+第五步，安装第三方包
+(testdir) sun@sun-OMEN:/python/myproject$ pip install jinja2
+Collecting jinja2
+  Downloading......
+Successfully installed MarkupSafe-1.0 jinja2-2.9.5
+第六步，退出环境
+(testdir) sun@sun:/python/myproject$ deactivate 
+sun@sun:/python/myproject$ 
+
+
+创建python3的虚拟环境
+sun@sun-OMEN-by-HP-Laptop:~/.local/lib/python3.5/site-packages$ python -m virtualenv /home/sun/python3env/py3env
+
+
+sudo apt-get install python-virtualenv
+virtualenv py2
+创建python3虚拟环境
+virtualenv -p /usr/bin/python3 py3
+    virtualenv -p /usr/bin/python3 py3.......
+
+使用virtualenvwrapper快捷创建虚拟环境
+    pip install virtualenvwrapper
+    sudo  find / -name virtualenvwrapper.sh
+        /usr/local/bin/virtualenvwrapper.sh
+配置source文件
+    vim ~/.bashrc
+    export WORKON_HOME=$HOME/.virtualenvs
+    export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+    export VIRTUALENVWRAPPER_VIRTUALENV=/usr/bin/virtualenv
+    source /usr/local/bin/virtualenvwrapper.sh
+    source ~/.bashrc
+workon 查看虚拟环境
+mkvirtualenv py2env
+mkvirtualenv --python=/usr/bin/python3 py3scrapy
+workon py2env 进入虚拟环境
+deactive 退出
+
+

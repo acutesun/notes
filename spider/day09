@@ -1,0 +1,22 @@
+一. 安装redis
+    sudo apt-get install redis-server
+    启动客户端访问: redis-cli
+pip install redis安装驱动
+redis数据类型
+字符串 
+set  course_name 'scrapy-redis'
+get  course_name
+getrange mykey start end
+getrange course_name 2 5
+strlen course_name
+incr/decr mykey(mykey必须是int)
+append course_name 'hello'
+
+哈希 
+
+列表 
+集合 
+可排序集合
+
+
+    
