@@ -1,0 +1,148 @@
+1,安装好git后设置
+    git config --global user.name "acutesun"
+    git config --global user.email 'sunsec@yeah.net'
+    
+2, 创建git目录
+    mkdir learn_git
+    cd learn_git
+    pwd   
+    
+3, 使用git init命令把目录变成git可以管理的仓库
+    git init
+    
+4, 编写readme.txt放在learn_git目录下
+
+5,用命令告诉git，把文件添加到仓库
+    git add readme.txt
+    
+6, 用命令git commit告诉Git，把文件提交到仓库：
+    git commit -m "wrote a readme file"       -m后面是注释，写入一个readme文件
+
+7,  commit可以一次提交很多文件，所以你可以多次add不同的文件
+    $ git add file1.txt
+    $ git add file2.txt file3.txt
+    $ git commit -m "add 3 files."
+
+    
+    git status 查看工作区状态
+    git diff   查看被修改的内容
+ 
+
+    HEAD指向的版本就是当前版本，因此，Git允许我们在版本的历史之间穿梭，使用命令git reset --hard commit_id。
+    穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。
+    要重返未来，用git reflog查看命令历史，以便确定要回到未来的哪个版本。
+
+我们把文件往Git版本库里添加的时候，是分两步执行的：
+第一步是用git add把文件添加进去，实际上就是把文件修改添加到暂存区；
+第二步是用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支
+工作区：使用git init将该目录变成工作区，工作区有一个隐藏目录.git
+暂存区：使用git add添加的所有文件都存放在该区域, 使用git commit会将暂存区的文件提交到分支
+
+
+
+
+8. 撤销修改
+    命令git checkout -- readme.txt意思就是，把readme.txt文件在工作区的修改全部撤销，这里有两种情况：
+    一种是readme.txt自修改后还没有被放到暂存区，现在，撤销修改就回到和版本库一模一样的状态；
+    一种是readme.txt已经添加到暂存区后，又作了修改，现在，撤销修改就回到添加到暂存区后的状态。
+    用命令git reset HEAD file可以把暂存区的修改撤销掉（unstage），重新放回工作区
+清除工作区的修改     git checkout -- readmet.txt
+
+小结：
+    1：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令git checkout -- file。
+    2：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第 一步用命令git reset HEAD -- file，就回到了场景1，第二步按场景1操作。
+    3：已经提交了不合适的修改到版本库时，想要撤销本次提交，参考版本回退一节，不过前提是没有推送到远程库。
+    
+9,删除文件
+    git rm test.txt
+    git commit -m 'remove test'
+    
+10,恢复误删文件
+    git checkout -- test.txt
+    
+11,与gihub通信,两者传输是通过ssh加密的
+    1,创建ssh key
+    ssh-keygen -t rsa -C "sunsec@yeah.net"
+    
+    /home/sun/.ssh/里面有id_rsa和id_rsa.pub两个文件，这两个就是SSH Key的秘钥对，id_rsa是私钥，不能泄露出去，id_rsa.pub是公钥，可以放心地告诉任何人。
+    
+    2,将id_rsa.pub的内容添加到github
+
+    3,将本地库关联到远程库：
+    git remote add origin https://github.com/acutesun/learngit.git
+    git remote add origin git@github.com:acutesun/learngit.git
+    git push -u origin master第一次推送master分支的所有内容
+    每次本地提交后，只要有必要，就可以使用命令
+    git push origin master推送最新修改
+
+    4,从远程库克隆
+    这里使用的ssh协议速度更快
+    git clone git@github.com:acutesun/gitskills.git
+  
+12,创建并使用分支
+    查看分支  git branch
+    创建分支   git branch name
+    切换分支   git checkout name
+    创建切换分支  git checkout -b name
+    合并某分支到当前分支  git merge name
+    删除分支    git branch -d name
+ 
+
+13,分支冲突
+    当Git无法自动合并分支时，就必须首先解决冲突。解决冲突后，再提交，合并完成。
+用git log --graph命令可以看到分支合并图
+
+14,分支策略
+    如果要强制禁用Fast forward模式，Git就会在merge时生成一个新的commit，这样，从分支历史上就可以看出分支信息
+    git merge --no-ff -m "merge with no-ff" dev
+    查看合并信息
+    git log --graph --pretty=oneline --abbrev-commit
+    
+15,BUG分支
+    stash功能，可以把当前工作现场“储藏”起来，等以后恢复现场后继续工作
+    git stash list  查看内容
+    git stash apply 恢复保存的状态
+    git stash apply stash@{0}  恢复指定的stash
+    git stash drop            来删除stash内容
+    git stash pop         功能等于git stash apply + git stash drop 
+    手头工作没有完成时，先把工作现场git stash一下，然后去修复bug，修复后，再git stash pop，回到工作现场
+    
+16,Feature分支：
+    开发一个新feature，最好新建一个分支；
+    如果要丢弃一个没有被合并过的分支，可以通过git branch -D <name>强行删除。
+    
+17,多人协作
+    
+    查看远程库信息，使用git remote -v
+    多人协作的工作模式通常是这样：
+    首先，可以试图用git push origin branch-name推送自己的修改；
+    如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图合并；
+    如果合并有冲突，则解决冲突，并在本地提交；
+    没有冲突或者解决掉冲突后，再用git push origin branch-name推送就能成功！
+    如果git pull提示“no tracking information”，则说明本地分支和远程分支的链接关系没有创建，用命令git branch --set-upstream branch-name origin/branch-name
+ 
+ 
+18, 标签管理
+    廖大文档
+    
+    
+问题一：error: src refspec master does not match any.
+        error: 无法推送一些引用到 'https://github.com/acutesun/awesome-python3-webapp.git'
+        
+        当本地库中存在未提交的文件(git status)会出现不能推送到远程库
+        或者本地库没有文件.无法更新到远程库
+        解决办法创建新文件并提交到master,在push
+        
+        
+问题二：
+        git remote rm origin (出现fatal: 远程 origin 已经存在该错误时)
+
+问题三：git 将本地分支推送到远程新分支
+
+        git push origin local_branch:remote_branch
+        这个操作，local_branch必须为你本地存在的分支，remote_branch为远程分支，如果remote_branch不存在则会自动创建分支。 
+    
+    
+
+
+            
